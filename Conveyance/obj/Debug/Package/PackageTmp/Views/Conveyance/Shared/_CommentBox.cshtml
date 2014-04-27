@@ -1,0 +1,38 @@
+﻿@{
+    int CaseID = PageData[0];
+    int ModuleID = PageData[1];
+    string CommentID = "Comment" + ModuleID;
+    string CommentHolderID = "CommentHolder" + ModuleID;
+}
+
+<div class="row">
+    <div class="col-md-5">
+    <textarea id="@CommentID" name="comment" placeholder="write a comment..." class="form-control"></textarea>
+    </div>
+    <div class="col-md-2">
+        <input value="Comment" class="btn btn-primary form-control" onclick="addcomment(@CaseID,@ModuleID)">
+    </div>
+</div>
+
+<script>
+    function addcomment(CaseID, ModuleID) {
+        var text = $('#Comment' + ModuleID).val();
+        $.post('@Url.Action("AddComment")',
+            {
+                CaseID: CaseID,
+                ModuleID: ModuleID,
+                comment: text
+            },
+             function (comment) {
+                 if (comment != null) {
+                     $('#CommentHolder' + ModuleID).append(
+                         "<li class='commentHolder'><div class='commentFooter'> <span>"+comment.datetime+"</span></div><p>"+comment.username+": <span>"+comment.content+"</span></p></li>");
+                     $('#Comment' + ModuleID).val("");
+                 }
+             },
+             'json');
+    }
+
+</script>
+
+

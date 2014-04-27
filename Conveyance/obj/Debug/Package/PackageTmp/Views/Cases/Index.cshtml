@@ -1,0 +1,231 @@
+﻿@model IEnumerable<Conveyance.Models.CaseNotification>
+@{
+    ViewBag.Title = "Cases";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <h2 style="text-align:center">Cases</h2>
+    </div>
+    <div class="col-md-3">
+        @if (User.IsInRole("Solicitor"))
+        {
+
+            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-bind="css: btnClass" style="margin-top:20px">
+                Invitation:<span data-bind=" text :counter"></span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu drop_panel" data-bind="foreach: notifications">
+                <li data-bind="css: { unview: !Checked }" style="overflow:auto">
+                    <a data-bind="attr: { href : '/Conveyance/OnClickNotification?NotificationID='+NotificationID+'&url='+URL}">
+                        <div class="display_box" align="left">
+                            <b data-bind=" text :Sender"></b>&nbsp;
+                            <span data-bind="text: Message"></span><br />
+                            <span style="font-size:9px; color:#999999" data-bind=" text :SendDateTime"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            @Html.ActionLink("Create new case", "Create", null, new { @class = "btn btn-primary", @style = "margin-top:20px" })
+        }
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Buy</div>
+            <div class="scroll_panel">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.ActionLink("Case Name", "Index", new { Sort = 1 })
+                        </th>
+                        <th></th>
+                        <th>
+                            @Html.ActionLink("Date Created", "Index", new { Sort = 2 })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Status", "Index", new { Sort = 3 })
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.Case.Instruction == Conveyance.Models.Instruction.Buy && !item.Case.IsCompleted)
+                        {
+                            string popupid = "#dialog" + item.Case.CaseID;
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.Case.CaseName, "GotoConveyance", new { CaseID = item.Case.CaseID })
+                                </td>
+                                <td><a class="glyphicon glyphicon-flag"></a>@item.NotificationNumber</td>
+                                <td>
+                                    @item.Case.CreateDateTime.ToString().AsDateTime().Date.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @RenderPage("_CaseStatus.cshtml", item.Case)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Sell</div>
+            <div class="scroll_panel">
+                <!-- Table -->
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.ActionLink("Case Name", "Index", new { Sort = 1 })
+                        </th>
+                        <th></th>
+                        <th>
+                            @Html.ActionLink("Date Created", "Index", new { Sort = 2 })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Status", "Index", new { Sort = 3 })
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.Case.Instruction == Conveyance.Models.Instruction.Sell && !item.Case.IsCompleted)
+                        {
+                            string popupid = "#dialog" + item.Case.CaseID;
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.Case.CaseName, "GotoConveyance", new { CaseID = item.Case.CaseID })
+                                </td>
+                                <td><a class="glyphicon glyphicon-flag"></a>@item.NotificationNumber</td>
+                                <td>
+                                    @item.Case.CreateDateTime.ToString().AsDateTime().Date.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @RenderPage("_CaseStatus.cshtml", item.Case)
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="btn btn-default" style="margin-bottom:20px" id="btn_old">Show old cases</div>
+<div class="row" id="old">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Buy</div>
+            <div class="scroll_panel">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.ActionLink("Case Name", "Index", new { Sort = 1 })
+                        </th>
+                        <th></th>
+                        <th>
+                            @Html.ActionLink("Date Created", "Index", new { Sort = 2 })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Status", "Index", new { Sort = 3 })
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.Case.Instruction == Conveyance.Models.Instruction.Buy && item.Case.IsCompleted)
+                        {
+                            string popupid = "#dialog" + item.Case.CaseID;
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.Case.CaseName, "GotoConveyance", new { CaseID = item.Case.CaseID })
+                                </td>
+                                <td><a class="glyphicon glyphicon-flag"></a>@item.NotificationNumber</td>
+                                <td>
+                                    @item.Case.CreateDateTime.ToString().AsDateTime().Date.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @RenderPage("_CaseStatus.cshtml", item.Case)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Sell</div>
+            <div class="scroll_panel">
+                <!-- Table -->
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.ActionLink("Case Name", "Index", new { Sort = 1 })
+                        </th>
+                        <th></th>
+                        <th>
+                            @Html.ActionLink("Date Created", "Index", new { Sort = 2 })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Status", "Index", new { Sort = 3 })
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        if (item.Case.Instruction == Conveyance.Models.Instruction.Sell && item.Case.IsCompleted)
+                        {
+                            string popupid = "#dialog" + item.Case.CaseID;
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.Case.CaseName, "GotoConveyance", new { CaseID = item.Case.CaseID })
+                                </td>
+                                <td><a class="glyphicon glyphicon-flag"></a>@item.NotificationNumber</td>
+                                <td>
+                                    @item.Case.CreateDateTime.ToString().AsDateTime().Date.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @RenderPage("_CaseStatus.cshtml", item.Case)
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*show/hide old cases*@
+<script>
+    $(document).ready(function () {
+        $('#old').hide();
+    });
+
+    $("#btn_old").click(function () {
+        $('#old').toggle();
+        if ($('#btn_old').text() == "Show old cases")
+            $('#btn_old').text("Hide old cases");
+        else
+            $('#btn_old').text("Show old cases");
+    });
+</script>
+<script src="~/Scripts/jquery.signalR-2.0.1.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/knockout-3.0.0.js"></script>
+<script src="~/Scripts/caseInvitation.js"></script>

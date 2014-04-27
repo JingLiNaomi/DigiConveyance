@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="DigiConveyance" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\zceeh_000\\Dropbox\\FYP\\workspace\\Conveyance\\Conveyance\\obj\\Debug\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\zceeh_000\\Dropbox\\FYP\\workspace\\Conveyance\\Conveyance\\obj\\Debug\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=tcp:bzf1jfbb8b.database.windows.net,1433;Initial Catalog=DigiConAooVLZBOH;User Id=zceeh51@bzf1jfbb8b;Password=Succ3ss4" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\zceeh_000\\Dropbox\\FYP\\workspace\\Conveyance\\Conveyance\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

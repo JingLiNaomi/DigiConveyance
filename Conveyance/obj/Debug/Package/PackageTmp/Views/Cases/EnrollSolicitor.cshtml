@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Enroll";
+}
+<h2>Enroll to case @ViewBag.CaseName @Html.ActionLink("View", "Details", new {id = @ViewBag.CaseID}) </h2>
+@using (Html.BeginForm("EnrollSolicitor", "Cases", new { CaseID = @ViewBag.CaseID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <p style="color:red">@ViewBag.ErrorMsg</p>
+        <p style="color:green">@ViewBag.SuccessMsg</p>
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Inviting solicitor</label>
+            <div class="col-md-10">
+                @ViewBag.Solicitor
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Choose case to enroll</label>
+            <div class="col-md-10">
+                @Html.DropDownList("DropDownCases")
+            </div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Enroll" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,88 @@
+﻿@{
+    Conveyance.Models.Case Case = PageData[0];
+    string StageAClass, StageBClass, StageCClass, StageDClass, StageEClass, StageFClass;
+    if (Case.ProgressA == Conveyance.Models.Progress.NotStarted)
+    {
+        StageAClass = "notstarted";
+    }
+    else if (Case.ProgressA == Conveyance.Models.Progress.InProcess)
+    {
+        StageAClass = "ongoing";
+    }
+    else
+    {
+        StageAClass = "completed";
+    }
+    if (Case.ProgressB == Conveyance.Models.Progress.NotStarted)
+    {
+        StageBClass = "notstarted";
+    }
+    else if (Case.ProgressB == Conveyance.Models.Progress.InProcess)
+    {
+        StageBClass = "ongoing";
+    }
+    else
+    {
+        StageBClass = "completed";
+    }
+    if (Case.ProgressC == Conveyance.Models.Progress.NotStarted)
+    {
+        StageCClass = "notstarted";
+    }
+    else if (Case.ProgressC == Conveyance.Models.Progress.InProcess)
+    {
+        StageCClass = "ongoing";
+    }
+    else
+    {
+        StageCClass = "completed";
+    }
+    if (Case.ProgressD == Conveyance.Models.Progress.NotStarted)
+    {
+        StageDClass = "notstarted";
+    }
+    else if (Case.ProgressD == Conveyance.Models.Progress.InProcess)
+    {
+        StageDClass = "ongoing";
+    }
+    else
+    {
+        StageDClass = "completed";
+    }
+    if (Case.ProgressE == Conveyance.Models.Progress.NotStarted)
+    {
+        StageEClass = "notstarted";
+    }
+    else if (Case.ProgressE == Conveyance.Models.Progress.InProcess)
+    {
+        StageEClass = "ongoing";
+    }
+    else
+    {
+        StageEClass = "completed";
+    }
+    if (Case.ProgressF == Conveyance.Models.Progress.NotStarted)
+    {
+        StageFClass = "notstarted";
+    }
+    else if (Case.ProgressF == Conveyance.Models.Progress.InProcess)
+    {
+        StageFClass = "ongoing";
+    }
+    else
+    {
+        StageFClass = "completed";
+    }
+}
+
+<ul class="nav nav-pills nav-stacked">
+        <li id="TabA"><a href="#stageA" data-toggle="tab" class="@StageAClass">Stage A: Instructions</a></li>
+        <li id="TabB"><a href="#stageB" data-toggle="tab" class="@StageBClass">Stage B: Pre-exchange</a></li>
+        <li id="TabC"><a href="#stageC" data-toggle="tab" class="@StageCClass">Stage C: Prior to exchange of contracts</a></li>
+        <li id="TabD"><a href="#stageD" data-toggle="tab" class="@StageDClass">Stage D: Exchange of contracts</a></li>
+        <li id="TabE"><a href="#stageE" data-toggle="tab" class="@StageEClass">Stage E: Completion</a></li>
+        <li id="TabF"><a href="#stageF" data-toggle="tab" class="@StageFClass">Stage F: Post-completion</a></li>
+</ul>
+
+
+

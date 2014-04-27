@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Template";
+}
+
+<h2>Template : @ViewBag.Name</h2>
+<div id="module">
+    <p class="hidden" id="path">@ViewBag.Path</p>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="btn btn-success" style="margin-top:50px" data-bind="click:addModule">Add module</button>
+            <button class="btn btn-primary" data-bind="click:save">Save all</button>
+        </div>
+        <div class="col-md-10">
+            <!-- Module panel -->
+            <ul class="list-unstyled" data-bind="foreach: modules" style="margin-top:15px">
+                <li>
+                    <form class="form-horizontal col-md-9" role="form">
+                        <div class="panel panel-default ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Stage</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" data-bind="value: Stage">
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                            <option value="E">E</option>
+                                            <option value="F">F</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Type</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" data-bind="value: Type">
+                                            <option value="1">Send file</option>
+                                            <option value="6">Advise</option>
+                                            <option value="8">Inform</option>
+                                            <option value="9">Tick off task</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Initiate party</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" data-bind="value: InitiateParty">
+                                            <option value="Buy">Buy</option>
+                                            <option value="Sell">Sell</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Communication</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" data-bind="value: Communication">
+                                            <!-- ko if: vBuyerToSolicitor -->
+                                            <option value="5">Buyer to solicitor</option>
+                                            <!-- /ko -->
+                                            <!-- ko if: vSellertoSolicitor -->
+                                            <option value="4">Seller to solicitor</option>
+                                            <!-- /ko -->
+                                            <!-- ko if: vSolicitorToBuyer -->
+                                            <option value="1">Solicitor to buyer</option>
+                                            <!-- /ko -->
+                                            <!-- ko if: vSolicitorToSeller -->
+                                            <option value="0">Solicitor to seller</option>
+                                            <!-- /ko -->
+                                            <!-- ko if: vSSolicitorToBSolicitor -->
+                                            <option value="2">Solicitor of seller to solicitor of buyer</option>
+                                            <!-- /ko -->
+                                            <!-- ko if: vBSolicitorToSSolicitor -->
+                                            <option value="3">Solicitor of buyer to solicitor of seller</option>
+                                            <!-- /ko -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Text displayed for sender</label>
+                                    <div class="col-md-6">
+                                        <textarea rows="3" class="form-control" data-bind="value: TextS"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group" data-bind="if:vtextC">
+                                    <label class="col-md-3 control-label">Text displayed for receiver</label>
+                                    <div class="col-md-6">
+                                        <textarea rows="3" class="form-control" data-bind="value: TextC"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <a class="btn btn-danger" data-bind='click: $root.deleteModule'>Delete</a>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/knockout-3.0.0.js"></script>
+    <script src="~/Scripts/module.js"></script>
+}

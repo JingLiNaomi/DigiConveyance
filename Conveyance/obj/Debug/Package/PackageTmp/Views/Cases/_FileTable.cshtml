@@ -1,0 +1,41 @@
+﻿@{
+    var Files = PageData[0];
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            File
+        </th>
+        <th>
+            Upload Time
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Version
+        </th>
+    </tr>
+
+    @foreach (var file in Files)
+    {
+        <tr>
+            @{
+               string url = file.Path;
+               string FileName = url.Substring(url.LastIndexOf('/') + 1, url.Length - url.LastIndexOf('/') - 1);
+            }
+            <td><a href="@url">@FileName</a></td>
+            <td>
+                @file.DateTime
+            </td>
+            <td>
+                @file.Description
+            </td>
+            <td>
+                @file.Version
+            </td>
+        </tr>
+    }
+</table>

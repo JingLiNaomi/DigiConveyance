@@ -1,0 +1,117 @@
+﻿@model Conveyance.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Admin panel";
+}
+
+
+        @using (Html.BeginForm("Index", "Admin", new { Country = "United Kingdom" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h4>Create a new account.</h4>
+            <hr />
+            <label style="color:green">@ViewBag.SuccessMsg</label>
+            <label style="color:red">@ViewBag.ErrorMsg</label>
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.Label("Role", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownList("DropDownRoles")
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Tel, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Tel, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Tel)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine1)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddressLine2)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="City">City</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("DropDownCities")
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    United Kingdom
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Postcode, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Postcode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Postcode)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Webpage, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Webpage, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Webpage)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-primary" value="Register" />
+                    <a class="btn btn-default" href="/Admin/Index">Clear</a>
+                </div>
+            </div>
+        }
+  

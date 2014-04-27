@@ -1,0 +1,84 @@
+﻿@model Conveyance.Models.CreateCaseViewModel
+
+@{
+    ViewBag.Title = "Create new case";
+}
+
+<h2>Create new case</h2>
+
+@using (Html.BeginForm("Create", "Cases", new { Country = "United Kingdom" }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        <p style="color:red">@ViewBag.ErrorMsg</p>
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <label class="col-md-2 control-label">Case template</label>
+            <div class="col-md-10">
+                @Html.DropDownList("DropDownTemplates")
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Instruction, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DropDownInstruction")
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reference, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Reference, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Reference)
+            </div>
+        </div>
+        <h4>Address of Property</h4>
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddressLine1, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AddressLine1)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.AddressLine2, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AddressLine2)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="City">City</label>
+            <div class="col-md-10">
+                @Html.DropDownList("DropDownCities")
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Country, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                United Kingdom
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Postcode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Postcode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Postcode)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

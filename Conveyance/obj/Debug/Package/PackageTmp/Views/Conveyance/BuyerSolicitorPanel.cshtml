@@ -1,0 +1,34 @@
+﻿@model Conveyance.Models.ConveyanceViewModel
+
+@{
+    ViewBag.Title = "Work panel";
+    ViewBag.ViewName = "BuyerSolicitorPanel";
+}
+<p class="hidden" id="tab">@Model.Tab</p>
+<p class="hidden" id="caseID">@ViewBag.CaseID</p>
+
+<div class="row">
+    <!-- Panel header -->
+    <div class="col-md-12">
+        @RenderPage("Shared/_PanelHeader.cshtml", ViewBag.CaseName, ViewBag.CaseID, ViewBag.SolicitorName, ViewBag.OpSolicitorName)
+    </div>
+</div>
+
+<div class="row">
+    <!-- Nav tabs -->
+    <div class="col-md-3">
+        @RenderPage("Shared/_NavTab.cshtml",Model.Case)
+    </div>
+
+    <!-- Tab panes -->
+    <div class="col-md-9">
+        @RenderPage("Shared/_TabPane.cshtml",Model.Modules,Model.Comments,ViewBag.ViewName,Model.Files)
+    </div>
+</div>
+
+<script src="~/Scripts/tab.js"></script>
+<script src="~/Scripts/comment.js"></script>
+<script src="~/Scripts/jquery.signalR-2.0.1.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/knockout-3.0.0.js"></script>
+<script src="~/Scripts/conveyanceNotification.js"></script>

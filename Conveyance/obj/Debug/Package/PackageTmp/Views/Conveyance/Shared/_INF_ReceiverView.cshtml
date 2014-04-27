@@ -1,0 +1,80 @@
+﻿@{
+    Conveyance.Models.Module module = PageData[0];
+    int CaseID = PageData[1];
+    string ViewName = PageData[2];
+    var comments = PageData[3];
+    string CommentHolderID = "CommentHolder" + module.ModuleID;
+    string PanelID = "Panel" + module.ModuleID;
+    string PanelTitleID = "PanelTitle" + module.ModuleID;
+    //Build FileComments list
+    List<Conveyance.Models.FileComment> list = new List<Conveyance.Models.FileComment>();
+    foreach (Conveyance.Models.Comment comment in comments)
+    {
+        Conveyance.Models.FileComment fc = new Conveyance.Models.FileComment();
+        fc.datetime = comment.SendDateTime;
+        fc.text = comment.Content;
+        fc.username = comment.Sender.UserName;
+        if (string.Compare(fc.username, User.Identity.Name) == 0)
+        {
+            fc.fromself = true;
+        }
+        else
+        {
+            fc.fromself = false;
+        }
+        fc.url = "";
+        list.Add(fc);
+    }
+    list = list.OrderBy(p => p.datetime).ToList();
+
+    //decide panel status details
+    string PanelClass, Status;
+    if (module.Status == Conveyance.Models.Status.RequireAction)
+    {
+        PanelClass = "panel panel-warning";
+        Status = "Waiting for acknowledgement";
+    }
+    else
+    {
+        PanelClass = "panel panel-success";
+        Status = "Completed";
+    }
+}
+
+<li>
+    <div class="@PanelClass" id="@PanelID">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="@PanelTitleID">@Status</h3>
+        </div>
+        <div class="panel-body">
+            @module.TextS
+            <div class="display_window">
+                <ul class="list list-unstyled" id="@CommentHolderID">
+                    @foreach (Conveyance.Models.FileComment item in list)
+                    {
+                        if (item.fromself)
+                        {
+                            <li class="commentHolder">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="commentHolder" style="margin-left:250px">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-footer">
+            @RenderPage("_CommentBox.cshtml", CaseID, module.ModuleID)
+        </div>
+    </div>
+</li>
+
+
+

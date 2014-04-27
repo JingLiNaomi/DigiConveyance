@@ -1,0 +1,28 @@
+﻿@{
+    List<Conveyance.Models.Module> modules = new List<Conveyance.Models.Module>(PageData[0]);
+    var comments = PageData[1];
+    string ViewName = PageData[2];
+    var files = PageData[3];
+}
+
+<div class="tab-content">
+    <div class="tab-pane" id="stageA">
+        @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.A), comments, ViewName,files)
+    </div>
+    <div class="tab-pane" id="stageB">
+            @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.B), comments, ViewName,files)
+     
+    </div>
+    <div class="tab-pane" id="stageC">
+            @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.C), comments, ViewName, files)
+    </div>
+    <div class="tab-pane" id="stageD">
+            @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.D), comments, ViewName, files)
+    </div>
+    <div class="tab-pane" id="stageE">
+            @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.E), comments, ViewName, files)
+    </div>
+    <div class="tab-pane" id="stageF">
+            @RenderPage("_ModulesTabView.cshtml", modules.Where(p => p.Stage == Conveyance.Models.Stage.F), comments, ViewName, files)
+    </div>
+</div>

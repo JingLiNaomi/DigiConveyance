@@ -1,0 +1,64 @@
+﻿@model Conveyance.Models.InviteCaseViewModel
+
+@{
+    ViewBag.Title = "Invite";
+}
+
+<h2>Invite</h2>
+<div>
+    <fieldset>
+        <legend>Invite client</legend>
+        @using (Html.BeginForm("Invite", "Cases",  new { CaseID = @ViewBag.CaseID },FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <p style="color:green">@ViewBag.SuccessMsg</p>
+                <p style="color:red">@ViewBag.ErrorMsg</p>
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email)
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Invite Client" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </fieldset>
+</div>
+
+<div>
+    <fieldset>
+        <legend>Enroll Solicitor</legend>
+        The other solicitor's username
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+    <input type="text" data-bind="value: userName" />
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <p id="userID" class="hidden">@ViewBag.UserID</p>
+                    <p id="caseID" class="hidden">@ViewBag.CaseID</p>
+                    <input type="button" value="Invite" class="btn btn-default" data-bind="click: addInvitation" />
+                </div>
+            </div>
+        }
+    </fieldset>
+</div>
+<br>
+@Html.ActionLink("Back to List", "Index")
+<script src="~/Scripts/jquery.signalR-2.0.1.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/knockout-3.0.0.js"></script>
+<script src="~/Scripts/invite.js"></script>
+
+
+
+

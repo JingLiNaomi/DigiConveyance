@@ -1,0 +1,108 @@
+﻿@using Conveyance.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#account" data-toggle="tab">Account</a></li>
+    <li><a href="#personalinfo" data-toggle="tab">Personal Info</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane container active" id="account">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-success">@ViewBag.StatusMessage</p>
+                @if (ViewBag.HasLocalPassword)
+                {
+                    @Html.Partial("_ChangePasswordPartial")
+                }
+                else
+                {
+                    @Html.Partial("_SetPasswordPartial")
+                }
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane container" id="personalinfo">
+        <form role="form">
+            <p style="color:red" data-bind="text:errmsg"></p>
+            <div class="form-group">
+                @Html.Label("Firstname", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:FirstName" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Lastname", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:LastName" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Email", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:Email" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Tel", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:Tel" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("City", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <select data-bind="options: cities, optionsText: 'name', optionsValue: 'id', value: City" class="form-control"></select>
+</div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Country", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <p>United Kingdom</p>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("AddressLine1", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:AddressLine1" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("AddressLine2", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:AddressLine2" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Postcode", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:Postcode" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Webpage", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    <input class="form-control" data-bind="value:Webpage" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input class="btn btn-primary" value="Save" data-bind="click:save" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/personalinfo.js"></script>
+}

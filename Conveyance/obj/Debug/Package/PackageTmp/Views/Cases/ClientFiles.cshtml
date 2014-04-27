@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Conveyance.Models.File>
+
+@{
+    ViewBag.Title = "Files";
+}
+
+<h2>Files</h2>
+
+<div class="row">
+    <!-- Nav tabs -->
+    <div class="col-md-3">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#fromSelf" data-toggle="tab">Files uploaded</a></li>
+            <li><a href="#fromSolicitor" data-toggle="tab">Files from solicitor</a></li>
+        </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div class="tab-pane active" id="fromSelf">
+                @RenderPage("_FileTable.cshtml", Model.Where(p => p.UserID == ViewBag.SelfID))
+
+            </div>
+
+            <div class="tab-pane" id="fromSolicitor">
+                @RenderPage("_FileTable.cshtml", Model.Where(p => p.UserID == ViewBag.SolicitorID))
+            </div>
+        </div>
+    </div>
+</div>
+

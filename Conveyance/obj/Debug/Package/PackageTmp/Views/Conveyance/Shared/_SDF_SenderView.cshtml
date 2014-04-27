@@ -1,0 +1,149 @@
+﻿@{
+    Conveyance.Models.Module module = PageData[0];
+    int CaseID = PageData[1];
+    string ViewName = PageData[2];
+    var comments = PageData[3];
+    var files = PageData[4];
+    string CommentHolderID = "CommentHolder" + module.ModuleID;
+    //Build FileComments list
+    List<Conveyance.Models.FileComment> list = new List<Conveyance.Models.FileComment>();
+    foreach (Conveyance.Models.Comment comment in comments)
+    {
+        Conveyance.Models.FileComment fc = new Conveyance.Models.FileComment();
+        fc.datetime = comment.SendDateTime;
+        fc.text = comment.Content;
+        fc.username = comment.Sender.UserName;
+        if (string.Compare(fc.username, User.Identity.Name) == 0)
+        {
+            fc.fromself = true;
+        }
+        else
+        {
+            fc.fromself = false;
+        }
+        fc.url = "";
+        list.Add(fc);
+    }
+
+    foreach (Conveyance.Models.File f in files)
+    {
+        Conveyance.Models.FileComment fc = new Conveyance.Models.FileComment();
+        fc.datetime = f.DateTime;
+        fc.url = f.Path;
+        fc.text = fc.url.Substring(fc.url.LastIndexOf('/') + 1, fc.url.Length - fc.url.LastIndexOf('/') - 1);
+        list.Add(fc);
+    }
+    list = list.OrderBy(p => p.datetime).ToList();
+
+    //decide panel status details
+    string PanelClass, Status;
+    bool HasUpload;
+    if (module.Status == Conveyance.Models.Status.RequireAction)
+    {
+        PanelClass = "panel panel-danger";
+        Status = "Require action";
+        HasUpload = true;
+    }
+    else if (module.Status == Conveyance.Models.Status.InAction)
+    {
+        PanelClass = "panel panel-warning";
+        Status = "Waiting for acknowledgement";
+        HasUpload = true;
+    }
+    else
+    {
+        PanelClass = "panel panel-success";
+        Status = "Completed";
+        HasUpload = false;
+    }
+}
+
+<li>
+    <div class="@PanelClass">
+        <div class="panel-heading">
+            <h3 class="panel-title">@Status</h3>
+        </div>
+        <div class="panel-body">
+            @module.TextS
+            <hr />
+            <div class="display_window">
+                <ul class="list list-unstyled" id="@CommentHolderID">
+                    @foreach (Conveyance.Models.FileComment item in list)
+                    {
+                        if (item.url != "")  //file item
+                        {
+                            <li>
+                                <a href="@item.url">@item.text</a>
+                            </li>
+                        }
+                        else   //comment item
+                        {
+                            if (item.fromself)
+                            {
+                                <li class="commentHolder">
+                                    <div class="commentFooter"> <span>@item.datetime</span></div>
+                                    <p>@item.username: <span>@item.text</span></p>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="commentHolder" style="margin-left:250px">
+                                    <div class="commentFooter"> <span>@item.datetime</span></div>
+                                    <p>@item.username: <span>@item.text</span></p>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-footer">
+            @RenderPage("_CommentBox.cshtml", CaseID, module.ModuleID)
+
+            @if (HasUpload)
+            {
+                using (Html.BeginForm("Process_SDF", "Conveyance", new { CaseID = CaseID, ModuleID = module.ModuleID, viewName = ViewName }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="file" name="file" id="ifile" class="form-control" style="margin-top:7px" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Send" class="btn btn-primary form-control" onsubmit="fileCheck()" />
+                        </div>
+                    </div>
+                }
+            }
+
+            @if (module.Checked)
+            {
+                using (Html.BeginForm("Reset_SDF", "Conveyance", new { CaseID = CaseID, ModuleID = module.ModuleID, viewName = ViewName }, FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "confirm('Confirm to reset?')" }))
+                {
+                    <div>
+                        <hr />
+                        <input type="submit" value="Reset" class="btn btn-primary form-control" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</li>
+
+
+<script>
+    function fileCheck() {
+        if (!confirm('Confirm to send file?'))
+            return;
+        var fname = document.getElementById("ifile").value;
+        // check if fname has the desired extension
+        var extensiton = fname.substr(fname.lastIndexOf('.') + 1);
+        if (extensiton == "pdf") {
+            return true;
+        } else {
+            alert("PDF file only");
+            return false;
+        }
+    }
+
+</script>

@@ -1,0 +1,62 @@
+﻿@model Conveyance.Models.ApplicationUser
+@{
+    ViewBag.Title = "Profile";
+    string FormTitle = Model.FirstName + " " + Model.LastName+" profile";
+}
+
+
+
+<div class="row">
+    <h2>@FormTitle</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Email
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Tel
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tel)
+        </dd>
+        <dt>
+            Address
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine1)
+        </dd>
+        <dt>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine2)
+        </dd>
+        <dt>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City.CityName)
+        </dd>
+        <dt>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+           Postcode
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Postcode)
+        </dd>
+        <dt>
+            Webpage
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Webpage)
+        </dd>
+
+
+    </dl>
+</div>

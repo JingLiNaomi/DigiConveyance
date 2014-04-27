@@ -1,0 +1,116 @@
+﻿@{
+    var modules = PageData[0];
+    List<Conveyance.Models.Comment> comments = new List<Conveyance.Models.Comment>(PageData[1]);
+    string ViewName = PageData[2];
+    List<Conveyance.Models.File> files = new List<Conveyance.Models.File>(PageData[3]);
+}
+<ul class="list-unstyled">
+    @foreach (Conveyance.Models.Module item in modules)
+    {
+        if (item.Type == Conveyance.Models.Type.SDF)        //Send file module
+        {
+            if (ViewName == "BuyerSolicitorPanel")
+            {
+                //sender of SDF
+                if (item.Communication == Conveyance.Models.Communication.BSolicitorToSSolicitor || item.Communication == Conveyance.Models.Communication.SolicitorToBuyer)
+                {
+                    @RenderPage("_SDF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+                //receiver of SDF
+                else if (item.Communication == Conveyance.Models.Communication.SSolicitorToBSolicitor || item.Communication == Conveyance.Models.Communication.BuyerToSolicitor) //receiver of SDF
+                {
+                    @RenderPage("_SDF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+            }
+
+            if (ViewName == "BuyerPanel")
+            {
+                //receiver of SDF
+                if (item.Communication == Conveyance.Models.Communication.SolicitorToBuyer)
+                {
+                    @RenderPage("_SDF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+                else if (item.Communication == Conveyance.Models.Communication.BuyerToSolicitor)  //sender
+                {
+                    @RenderPage("_SDF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+            }
+          
+            if (ViewName == "SellerSolicitorPanel")
+            {
+                //sender of SDF
+                if (item.Communication == Conveyance.Models.Communication.SSolicitorToBSolicitor || item.Communication == Conveyance.Models.Communication.SolicitorToSeller)
+                {
+                    @RenderPage("_SDF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+                //receiver of SDF
+                else if (item.Communication == Conveyance.Models.Communication.BSolicitorToSSolicitor || item.Communication == Conveyance.Models.Communication.SellerToSolicitor) //receiver of SDF
+                {
+                    @RenderPage("_SDF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+            }
+
+            if (ViewName == "SellerPanel")
+            {
+                //receiver of SDF
+                if (item.Communication == Conveyance.Models.Communication.SolicitorToSeller)
+                {
+                    @RenderPage("_SDF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+                else if (item.Communication == Conveyance.Models.Communication.SellerToSolicitor)//sender of SDF
+                {
+                    @RenderPage("_SDF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID), files.Where(p => p.ModuleID == item.ModuleID))
+                }
+            }
+        }
+        else if (item.Type == Conveyance.Models.Type.ADV)        //advice module
+        {
+            if (ViewName == "BuyerSolicitorPanel" || ViewName == "SellerSolicitorPanel")
+            {
+                //sender of ADV
+                @RenderPage("_ADV_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+            }
+
+            if (ViewName == "BuyerPanel" || ViewName == "SellerPanel")
+            {
+                //receiver of ADV
+                @RenderPage("_ADV_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+            }
+        }
+        else if (item.Type == Conveyance.Models.Type.TK)
+        {
+            if (ViewName == "BuyerSolicitorPanel" || ViewName == "SellerSolicitorPanel")
+            {
+               @RenderPage("_TK_View.cshtml", item, ViewBag.CaseID)
+            }
+        }
+         else if (item.Type == Conveyance.Models.Type.INF)  //inform client
+        {
+           if (ViewName == "BuyerSolicitorPanel" && item.InitiateParty== Conveyance.Models.Instruction.Buy)
+            {
+                //sender
+                    @RenderPage("_INF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+               
+            }
+
+           if (ViewName == "BuyerPanel" && item.InitiateParty == Conveyance.Models.Instruction.Buy)
+            { 
+                //receiver 
+                    @RenderPage("_INF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+            }
+
+            if (ViewName == "SellerSolicitorPanel" && item.InitiateParty == Conveyance.Models.Instruction.Sell)
+            {
+                //sender
+                    @RenderPage("_INF_SenderView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+            }
+
+            if (ViewName == "SellerPanel" && item.InitiateParty == Conveyance.Models.Instruction.Sell)
+            {
+                //receiver
+                    @RenderPage("_INF_ReceiverView.cshtml", item, ViewBag.CaseID, ViewName, comments.Where(p => p.ModuleID == item.ModuleID))
+            }
+        }
+    }
+
+</ul>

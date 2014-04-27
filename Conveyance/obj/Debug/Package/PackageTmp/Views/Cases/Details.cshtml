@@ -1,0 +1,131 @@
+﻿@model Conveyance.Models.Case
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<div>
+    <h4>Case @Html.DisplayFor(model => model.CaseName)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Instruction)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instruction)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reference)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reference)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AddressLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddressLine2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City.CityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City.CityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Postcode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Postcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CompleteDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompleteDateTime)
+        </dd>
+
+
+    </dl>
+</div>
+<div>
+    <hr />
+    <h4>Parties</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Client
+        </dt>
+        @if (Model.ClientID == null)
+        {
+            <dd>
+                *Unenrolled*
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Model.Client.UserName
+            </dd>
+        }
+        @if (Model.Instruction == Conveyance.Models.Instruction.Buy)
+        { 
+            <dt>
+                Solicitor of Seller
+            </dt>
+        }
+        else
+        { 
+            <dt>
+                Solicitor of Buyer
+            </dt>
+        }
+        
+        @if (Model.OpCaseID == null)
+        {
+            <dd>
+                *Unenrolled*
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Model.OpCase.Solicitor.UserName
+            </dd>
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CaseID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

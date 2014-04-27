@@ -1,0 +1,169 @@
+﻿@{
+    Conveyance.Models.Module module = PageData[0];
+    int CaseID = PageData[1];
+    string ViewName = PageData[2];
+    var comments = PageData[3];
+    string CommentHolderID = "CommentHolder" + module.ModuleID;
+    string PanelID = "Panel" + module.ModuleID;
+    string PanelTitleID = "PanelTitle" + module.ModuleID;
+    //Build FileComments list
+    List<Conveyance.Models.FileComment> list = new List<Conveyance.Models.FileComment>();
+    foreach (Conveyance.Models.Comment comment in comments)
+    {
+        Conveyance.Models.FileComment fc = new Conveyance.Models.FileComment();
+        fc.datetime = comment.SendDateTime;
+        fc.text = comment.Content;
+        fc.username = comment.Sender.UserName;
+        if (string.Compare(fc.username, User.Identity.Name) == 0)
+        {
+            fc.fromself = true;
+        }
+        else
+        {
+            fc.fromself = false;
+        }
+        fc.url = "";
+        list.Add(fc);
+    }
+    list = list.OrderBy(p => p.datetime).ToList();
+
+    //decide panel status details
+    string TextInputID = "TextInput" + module.ModuleID;
+    string ResetBtnID = "ResetBtn" + module.ModuleID;
+    string adviceID = "advice" + module.ModuleID;
+    string AdviceHolderID = "AdviceHolder" + module.ModuleID;
+    string preID = "pre" + module.ModuleID;
+    string PanelClass, Status,TextInputClass,ResetBtnClass,AdviceClass;
+    if (module.Status == Conveyance.Models.Status.RequireAction)
+    {
+        PanelClass = "panel panel-danger";
+        Status = "Require action";
+        TextInputClass = "show";
+        ResetBtnClass = "hidden";
+        AdviceClass = "hidden";
+    }
+    else if (module.Status == Conveyance.Models.Status.InAction)
+    {
+        PanelClass = "panel panel-warning";
+        Status = "Waiting for acknowledgement";
+        TextInputClass = "hidden";
+        ResetBtnClass = "hidden";
+        AdviceClass = "show";
+    }
+    else
+    {
+        PanelClass = "panel panel-success";
+        Status = "Completed";
+        TextInputClass = "hidden";
+        ResetBtnClass = "show";
+        AdviceClass = "show";
+    }
+
+}
+<li>
+   
+    <div class="@PanelClass" id="@PanelID">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="@PanelTitleID">@Status</h3>
+        </div>
+        <div class="panel-body">
+            @module.TextS
+            <div class="display_window">
+                <ul class="list list-unstyled" id="@CommentHolderID">
+                    <li class="@AdviceClass" id="@AdviceHolderID">
+                        <div id="@preID" class="AdviceHolder">
+                            @module.TextC
+                        </div>
+                    </li>
+                    @foreach (Conveyance.Models.FileComment item in list)
+                    {
+                        if (item.fromself)
+                        {
+                            <li class="commentHolder">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="commentHolder" style="margin-left:250px">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-footer">
+            @RenderPage("_CommentBox.cshtml", CaseID, module.ModuleID)
+            <div id="@TextInputID" class="@TextInputClass">
+                <hr />
+                <div class="row">
+                    <div class="col-md-5">
+                        <textarea class="form-control" id="@adviceID" placeholder="Write advice here..."></textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary form-control" onclick="saveAdvice('@CaseID','@module.ModuleID')">Send</button>
+                    </div>
+                </div>
+            </div>
+            <div class="@ResetBtnClass" id="@ResetBtnID">
+                <hr />
+                <input type="submit" value="Reset" class="btn btn-primary form-control" onclick="resetAdvice(@CaseID,@module.ModuleID)"/>
+            </div>
+        </div>
+    </div>
+</li>
+<script>
+    function saveAdvice(CaseID, ModuleID) {
+        if (confirm("Confirm to send advice?")) {
+            var adviceText = $('#advice' + ModuleID).val();
+            $.post('@Url.Action("SaveAdvice")',
+                {
+                    CaseID: CaseID,
+                    ModuleID: ModuleID,
+                    AdviceText: adviceText
+                },
+                 function (data) {
+                     if (data == "success") {
+                         $('#AdviceHolder' + ModuleID).removeClass('hidden');
+                         $('#AdviceHolder' + ModuleID).addClass('show');
+                         $('#pre' + ModuleID).text(adviceText);
+                         $('#TextInput' + ModuleID).removeClass('show');
+                         $('#TextInput' + ModuleID).addClass('hidden');
+                         //update panel header
+                         $('#Panel' + ModuleID).removeClass("panel-danger");
+                         $('#Panel' + ModuleID).addClass("panel-warning");
+                         $('#PanelTitle' + ModuleID).text("Waiting for acknowledgement from client");
+                     }
+                 });
+        }
+    }
+
+    function resetAdvice(CaseID, ModuleID) {
+        if (confirm("Confirm to reset?")) {
+            $.post('@Url.Action("ResetAdvice")',
+                {
+                    CaseID: CaseID,
+                    ModuleID: ModuleID
+                },
+                 function (result) {
+                     if (result == "success") {
+                         //update controls
+                         $('#AdviceHolder' + ModuleID).removeClass('show');
+                         $('#AdviceHolder' + ModuleID).addClass('hidden');
+                         $('#TextInput' + ModuleID).removeClass('hidden');
+                         $('#TextInput' + ModuleID).addClass('show');
+                         $('#ResetBtn' + ModuleID).removeClass('show');
+                         $('#ResetBtn' + ModuleID).addClass('hidden');
+                         //update panel header
+                         $('#Panel' + ModuleID).removeClass("panel-success");
+                         $('#Panel' + ModuleID).addClass("panel-danger");
+                         $('#PanelTitle' + ModuleID).text("Require action");
+                     }
+                 });
+        }
+    }
+
+</script>

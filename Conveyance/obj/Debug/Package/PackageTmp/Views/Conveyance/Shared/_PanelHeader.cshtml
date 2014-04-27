@@ -1,0 +1,90 @@
+﻿@{
+    string CaseName = PageData[0];
+    int CaseID = PageData[1];
+    string SolicitorName = PageData[2];
+    string OpSolicitorName = PageData[3];
+}
+<div class="row">
+    <div class="col-md-7">
+        <h4>Case : @CaseName</h4>
+        @if (User.IsInRole("Solicitor"))
+        {
+            <small>@SolicitorName and @OpSolicitorName</small>
+        }
+    </div>
+
+    <table class="col-md-5">
+        <tr>
+            @if (User.IsInRole("admin") || User.IsInRole("Solicitor"))
+            {
+                <td style="padding-left:80px">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-bind="css: btnClass">
+                                Notification:<span data-bind=" text :counter"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu drop_panel" data-bind="foreach: notifications">
+                                <li data-bind="css: { unview: !Checked }" style="overflow:auto">
+                                    <p data-bind="text:'/Conveyance/OnClickNotification?NotificationID='+NotificationID+'&url='+URL"></p>
+                                    <a data-bind="attr: { href : '/Conveyance/OnClickNotification?NotificationID='+NotificationID+'&url='+URL}">
+                                        <div class="display_box" align="left">
+                                            <b data-bind=" text :Sender"></b>&nbsp;
+                                            <span data-bind="text: Message"></span><br />
+                                            <span style="font-size:9px; color:#999999" data-bind=" text :SendDateTime"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ActionLink("Files", "Files", "Cases", new { id = CaseID }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Log", "Log", "Cases", new { id = CaseID }, new { @class = "btn btn-info" })
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                Manage
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Edit", "Edit", "Cases", new { id = CaseID }, null) </li>
+                                <li>@Html.ActionLink("Details", "Details", "Cases", new { id = CaseID }, null)</li>
+                                <li>@Html.ActionLink("Invite", "Invite", "Cases", new { id = CaseID }, null)</li>
+                                <li class="divider"></li>
+                                <li>@Html.ActionLink("Delete", "Delete", "Cases", new { id = CaseID }, null)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            }
+            else
+            {
+                <td style="padding-left: 80px">
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-bind="css: btnClass">
+                                Notification:<span data-bind=" text :counter"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu drop_panel" data-bind="foreach: notifications">
+                                <li style="overflow:auto" data-bind="css: { unview: !Checked }">
+                                    
+                                    <a data-bind="attr: { href : '/Conveyance/OnClickNotification?NotificationID='+NotificationID+'&url='+URL}">
+                                        <div class="display_box" align="left">
+                                            <b data-bind=" text :Sender"></b>&nbsp;
+                                            <span data-bind="text: Message"></span><br />
+                                            <span style="font-size:9px; color:#999999" data-bind=" text :SendDateTime"></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ActionLink("Files", "Files", "Cases", new { id = CaseID }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Log", "Log", "Cases", new { id = CaseID }, new { @class = "btn btn-info" })
+                    </div>
+                </td>
+            }
+
+        </tr>
+    </table>
+</div>
+<hr>

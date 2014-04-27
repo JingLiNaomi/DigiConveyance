@@ -1,0 +1,100 @@
+﻿@{
+    Conveyance.Models.Module module = PageData[0];
+    int CaseID = PageData[1];
+    //decide panel status details
+    string PanelID = "Panel" + module.ModuleID;
+    string PanelTitleID = "PanelTitle" + module.ModuleID;
+    string TkBtnID = "TkBtn" + module.ModuleID;
+    string ResetBtnID = "ResetBtn" + module.ModuleID;
+    string PanelClass, Status, TkBtnClass, ResetBtnClass;
+    if (module.Status == Conveyance.Models.Status.RequireAction)
+    {
+        PanelClass = "panel panel-danger";
+        Status = "Require action";
+        TkBtnClass = "show";
+        ResetBtnClass = "hidden";
+    }
+    else
+    {
+        PanelClass = "panel panel-success";
+        Status = "Completed";
+        TkBtnClass = "hidden";
+        ResetBtnClass = "show";
+    }
+}
+<li>
+    <div class="@PanelClass" id="@PanelID">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="@PanelTitleID">@Status</h3>
+        </div>
+        <div class="panel-body">
+            @module.TextS
+        </div>
+        <div class="panel-footer">
+            <div class="@TkBtnClass" id="@TkBtnID">
+                <input value="Done" class="btn btn-primary form-control" onclick="saveTK(@CaseID,@module.ModuleID)" />
+            </div>
+            <div class="@ResetBtnClass" id="@ResetBtnID">
+                <input type="submit" value="Reset" class="btn btn-primary form-control" onclick="resetTK(@CaseID,@module.ModuleID)" />
+            </div>
+        </div>
+    </div>
+</li>
+<script>
+    function saveTK(CaseID, ModuleID) {
+        if (confirm("Confirm to tick task?"))
+        {
+            $.post('@Url.Action("SaveTK")',
+             {
+                 CaseID: CaseID,
+                 ModuleID: ModuleID
+             },
+              function (data) {
+                  if (data == "fail")
+                      alert("Error, please try again later");
+                  else
+                  {
+                      //update control
+                      $('#TkBtn' + ModuleID).removeClass('show');
+                      $('#TkBtn' + ModuleID).addClass('hidden');
+                      $('#ResetBtn' + ModuleID).removeClass('hidden');
+                      $('#ResetBtn' + ModuleID).addClass('show');
+
+                      //update panel header
+                      $('#Panel' + ModuleID).removeClass("panel-danger");
+                      $('#Panel' + ModuleID).addClass("panel-success");
+                      $('#PanelTitle' + ModuleID).text("Completed");
+                  }
+              });
+        }
+    }
+
+    function resetTK(CaseID, ModuleID)
+    {
+        if (confirm("Confirm to reset?"))
+        {
+            $.post('@Url.Action("ResetTK")',
+            {
+                CaseID: CaseID,
+                ModuleID: ModuleID
+            },
+             function (data) {
+                 if (data == "fail")
+                     alert("Error, please try again later");
+                 else
+                 {
+                     //update control
+                     $('#TkBtn' + ModuleID).removeClass('hidden');
+                     $('#TkBtn' + ModuleID).addClass('show');
+                     $('#ResetBtn' + ModuleID).removeClass('show');
+                     $('#ResetBtn' + ModuleID).addClass('hidden');
+
+                     //update panel header
+                     $('#Panel' + ModuleID).removeClass("panel-success");
+                     $('#Panel' + ModuleID).addClass("panel-danger");
+                     $('#PanelTitle' + ModuleID).text("Require action");
+                 }
+             });
+        }
+    }
+</script>

@@ -1,0 +1,153 @@
+﻿@{
+    Conveyance.Models.Module module = PageData[0];
+    int CaseID = PageData[1];
+    string ViewName = PageData[2];
+    var comments = PageData[3];
+    string CommentHolderID = "CommentHolder" + module.ModuleID;
+    string PanelID = "Panel" + module.ModuleID;
+    string PanelTitleID = "PanelTitle" + module.ModuleID;
+    //Build FileComments list
+    List<Conveyance.Models.FileComment> list = new List<Conveyance.Models.FileComment>();
+    foreach (Conveyance.Models.Comment comment in comments)
+    {
+        Conveyance.Models.FileComment fc = new Conveyance.Models.FileComment();
+        fc.datetime = comment.SendDateTime;
+        fc.text = comment.Content;
+        fc.username = comment.Sender.UserName;
+        if (string.Compare(fc.username, User.Identity.Name) == 0)
+        {
+            fc.fromself = true;
+        }
+        else
+        {
+            fc.fromself = false;
+        }
+        fc.url = "";
+        list.Add(fc);
+    }
+    list = list.OrderBy(p => p.datetime).ToList();
+
+    //decide panel status details
+    string InformBtnID = "InfBtn" + module.ModuleID;
+    string ResetBtnID = "ResetBtn" + module.ModuleID;
+    string PanelClass, Status, InfBtnClass,ResetBtnClass;
+    if (module.Status == Conveyance.Models.Status.RequireAction)
+    {
+        PanelClass = "panel panel-danger";
+        Status = "Require action";
+        InfBtnClass = "show";
+        ResetBtnClass = "hidden";
+    }
+    else
+    {
+        PanelClass = "panel panel-success";
+        Status = "Completed";
+        InfBtnClass = "hidden";
+        ResetBtnClass = "show";
+    }
+
+}
+<li>
+    <div class="@PanelClass" id="@PanelID">
+        <div class="panel-heading">
+            <h3 class="panel-title" id="@PanelTitleID">@Status</h3>
+        </div>
+        <div class="panel-body">
+            @module.TextS
+            <div class="display_window">
+                <ul class="list list-unstyled" id="@CommentHolderID">
+                    @foreach (Conveyance.Models.FileComment item in list)
+                    {
+                        if (item.fromself)
+                        {
+                            <li class="commentHolder">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="commentHolder" style="margin-left:250px">
+                                <div class="commentFooter"> <span>@item.datetime</span></div>
+                                <p>@item.username: <span>@item.text</span></p>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="panel-footer">
+            @RenderPage("_CommentBox.cshtml", CaseID, module.ModuleID)
+            <div class="@InfBtnClass" id="@InformBtnID">
+                <hr />
+                <input value="Done,inform client" class="btn btn-primary form-control" onclick="saveInf(@CaseID,@module.ModuleID)" />
+            </div>
+            <div class="@ResetBtnClass" id="@ResetBtnID">
+                <hr />
+                <input type="submit" value="Reset" class="btn btn-primary form-control" onclick="resetInf(@CaseID,@module.ModuleID)" />
+            </div>
+        </div>
+    </div>
+</li>
+<script>
+    function saveInf(CaseID, ModuleID) {
+        if(confirm("Confirm to inform client?"))
+        {
+            $('#Checkbox' + ModuleID).attr('disabled', 'disabled');
+            $.post('@Url.Action("SaveInf")',
+                {
+                    CaseID: CaseID,
+                    ModuleID: ModuleID
+                },
+                 function (data) {
+                     if (data != "success") {
+                         alert("Error, please try again later");
+                     }
+                     else
+                     {
+                         //update control
+                         $('#InfBtn' + ModuleID).removeClass('show');
+                         $('#InfBtn' + ModuleID).addClass('hidden');
+                         $('#ResetBtn' + ModuleID).removeClass('hidden');
+                         $('#ResetBtn' + ModuleID).addClass('show');
+
+                         //update panel header
+                         $('#Panel' + ModuleID).removeClass("panel-danger");
+                         $('#Panel' + ModuleID).addClass("panel-success");
+                         $('#PanelTitle' + ModuleID).text("Completed");
+                     }
+                 });
+        }
+    }
+
+    function resetInf(CaseID,ModuleID)
+    {
+        if(confirm("Confirm to reset?"))
+        {
+            $.post('@Url.Action("ResetInf")',
+                {
+                    CaseID: CaseID,
+                    ModuleID: ModuleID
+                },
+                 function (data) {
+                     if (data != "success") {
+                         alert("Error, please try again later");
+                     }
+                     else
+                     {
+                         //update control
+                         $('#InfBtn' + ModuleID).removeClass('hidden');
+                         $('#InfBtn' + ModuleID).addClass('show');
+                         $('#ResetBtn' + ModuleID).removeClass('show');
+                         $('#ResetBtn' + ModuleID).addClass('hidden');
+
+                         //update panel header
+                         $('#Panel' + ModuleID).removeClass("panel-success");
+                         $('#Panel' + ModuleID).addClass("panel-danger");
+                         $('#PanelTitle' + ModuleID).text("Require action");
+                     }
+                 });
+        }
+    }
+
+</script>

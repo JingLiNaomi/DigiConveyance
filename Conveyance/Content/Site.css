@@ -1,0 +1,225 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/*Start Wall Post*/
+
+.msgTextArea
+{
+    width: 97%;
+    height: 80px;
+    border-radius: 7px;
+}
+
+
+
+.publishContainer
+{
+    width: 70%;
+    text-align: right;
+     background-color: #F2F2F2;
+    border-color: #B4BBCD;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    padding: 1em 1.2em ;
+    margin-bottom:2em;
+}
+
+
+
+
+.commentFooter
+{
+    font-size: 0.85em;
+     color: #8B8B77;
+}
+
+
+.commentHolder
+{
+    clear: both;
+    padding: 5px;
+    width:300px;
+    border:solid 1px;
+    border-color:lightgray;
+    border-radius:5px;
+    margin:2px;
+}
+
+.AdviceHolder {
+    border:solid 1px;
+    border-color: gray;
+    padding: 5px;
+    margin-top:5px;
+    margin-bottom:10px;
+    font-style:italic;
+}
+
+
+aside
+{
+    float: right;
+    width: 30%;
+    font-size: 0.85em;
+}
+
+    aside > div, #myConnections
+    {
+        border: solid 2px #3B5998;
+        border-radius: 7px;
+        float: left;
+        width: 99%;
+        margin-bottom: 5px;
+    }
+
+        aside h3, #myConnections h3
+        {
+            background-color: #3B5998;
+            color: White;
+            margin: 0px;
+            padding: 3px;
+            font-size: 0.95em;
+        }
+
+        aside a, #myConnections a
+        {
+            text-decoration: none;
+            color: #015BA7;
+            font-weight: bold;
+        }
+
+            aside a:hover, #myConnections a:hover
+            {
+                text-decoration: underline;
+            }
+
+        aside img, #myConnections img
+        {
+            float: left;
+            margin-right: 7px;
+        }
+
+.useritem
+{
+    border-bottom: 1px solid #DEE5EA;
+    clear: both;
+    overflow: auto;
+    padding: 3px;
+}
+
+    .useritem p
+    {
+        margin: 4px auto 7px 55px;
+    }
+
+.btnRequest, .btn
+{
+    margin-top: 7px;
+}
+
+#myConnections
+{
+    margin: 15px;
+    width: 60%;
+    font-size: 0.85em;
+}
+.notification
+{
+    padding:5px;
+    background-color:#eeeeee;
+    width:70%;
+    text-align:center;
+    cursor:pointer;
+    font-weight:bold;
+}
+.commentNotification
+{
+      cursor:pointer;
+    font-weight:bold !important;
+}
+ .commentNotification:hover
+    {
+        background-color:transparent;
+    }
+
+ /*End Wall Post*/
+
+
+.completed {
+color:green;
+}
+
+.ongoing {
+color:orange;
+}
+
+.notstarted {
+color:red;
+}
+
+
+.scroll_panel {
+height:350px;
+overflow:scroll;
+}
+.display_box {
+	padding: 4px;
+	height: 65px;
+    width:350px;
+}
+
+.unview {
+background-color:#CED6F0;
+
+}
+
+.drop_panel {
+    height:400px;
+    overflow-y:auto;
+}
+
+.display_window {
+max-height:200px;
+overflow:auto;
+
+}

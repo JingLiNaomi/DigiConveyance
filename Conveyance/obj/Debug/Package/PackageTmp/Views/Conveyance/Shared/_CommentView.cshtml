@@ -1,0 +1,50 @@
+﻿@{
+    var comments = PageData[0];
+    int CaseID = PageData[1];
+    string ViewName = PageData[2];
+    int ModuleID = PageData[3];
+    string CommentID = "Comment"+ModuleID;
+    string CommentHolderID = "CommentHolder" + ModuleID;
+}
+
+<li>
+    <span class="showComment" style="color: blue; margin-left:40px">Show comment</span><span class="hideComment" style="color: blue; margin-left: 40px">Hide comment</span>
+    <div class="commentSection">
+        <ul id="@CommentHolderID">
+            @foreach (var comment in comments)
+            {
+                <li class="commentHolder">
+                    <p><a>@comment.Sender.UserName</a>: <span>@comment.Content</span></p>
+                    <div class="commentFooter"> <span>@comment.SendDateTime</span></div>
+                </li>
+
+            }
+        </ul>
+        <div class="publishComment">
+                <textarea id="@CommentID" name="comment" style="width:500px;margin-left:40px" placeholder="write a comment..."></textarea>
+                <input value="Comment" class="btn btn-primary" onclick="addcomment(@CaseID,@ModuleID)">
+        </div>
+    </div>
+    <hr>
+</li>
+
+<script>
+    function addcomment(CaseID, ModuleID) {
+        var text = $('#Comment' + ModuleID).val();
+        $.post('@Url.Action("AddComment")',
+            {
+                CaseID: CaseID,
+                ModuleID: ModuleID,
+                comment: text
+            },
+             function (comment) {
+                 if (comment != null) {
+                     $('#CommentHolder' + ModuleID).append(
+                         "<li class='commentHolder'><p><a>"+comment.username+"</a>: <span>"+comment.content+"</span></p><div class='commentFooter'> <span>"+comment.datetime+"</span></div></li>");
+                     $('#Comment' + ModuleID).val("");
+                 }
+             },
+             'json');
+    }
+
+</script>

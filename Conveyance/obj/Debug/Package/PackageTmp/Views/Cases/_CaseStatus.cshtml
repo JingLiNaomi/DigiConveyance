@@ -1,0 +1,84 @@
+﻿@{
+    Conveyance.Models.Case Case = PageData[0];
+    string StageAClass = "";
+    string StageBClass = "";
+    string StageCClass = "";
+    string StageDClass = "";
+    string StageEClass = "";
+    string StageFClass = "";
+    if (Case.ProgressA == Conveyance.Models.Progress.NotStarted)
+    {
+        StageAClass = "notstarted";
+    }
+    else if (Case.ProgressA == Conveyance.Models.Progress.InProcess)
+    {
+        StageAClass = "ongoing";
+    }
+    else
+    {
+        StageAClass = "completed";
+    }
+    if (Case.ProgressB == Conveyance.Models.Progress.NotStarted)
+    {
+        StageBClass = "notstarted";
+    }
+    else if (Case.ProgressB == Conveyance.Models.Progress.InProcess)
+    {
+        StageBClass = "ongoing";
+    }
+    else
+    {
+        StageBClass = "completed";
+    }
+    if (Case.ProgressC == Conveyance.Models.Progress.NotStarted)
+    {
+        StageCClass = "notstarted";
+    }
+    else if (Case.ProgressC == Conveyance.Models.Progress.InProcess)
+    {
+        StageCClass = "ongoing";
+    }
+    else
+    {
+        StageCClass = "completed";
+    }
+    if (Case.ProgressD == Conveyance.Models.Progress.NotStarted)
+    {
+        StageDClass = "notstarted";
+    }
+    else if (Case.ProgressD == Conveyance.Models.Progress.InProcess)
+    {
+        StageDClass = "ongoing";
+    }
+    else
+    {
+        StageDClass = "completed";
+    }
+    if (Case.ProgressE == Conveyance.Models.Progress.NotStarted)
+    {
+        StageEClass = "notstarted";
+    }
+    else if (Case.ProgressE == Conveyance.Models.Progress.InProcess)
+    {
+        StageEClass = "ongoing";
+    }
+    else
+    {
+        StageEClass = "completed";
+    }
+    if (Case.ProgressF == Conveyance.Models.Progress.NotStarted)
+    {
+        StageFClass = "notstarted";
+    }
+    else if (Case.ProgressF == Conveyance.Models.Progress.InProcess)
+    {
+        StageFClass = "ongoing";
+    }
+    else
+    {
+        StageFClass = "completed";
+    }
+
+}
+
+<b class="@StageAClass">A</b><b class="@StageBClass">B</b><b class="@StageCClass">C</b><b class="@StageDClass">D</b><b class="@StageEClass">E</b><b class="@StageFClass">F</b>
